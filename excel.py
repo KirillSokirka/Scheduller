@@ -25,14 +25,12 @@ def ExcelOneDay(group, day):
 
     for i in range(Day,Day+6):
         if sheet[i][group+1].value != None:
-            tempDateValue = sheet[i][1].value.replace(".", "\.").replace("-", "\-")
-            tempLessonValue = sheet[i][group + 1].value\
-                .replace(".", "\.")\
-                .replace("(", "\(")\
-                .replace(")", "\)")\
-                .replace("[", "\[")\
-                .replace("]", "\]")\
+            tempDateValue = sheet[i][1].value\
+                .replace('.', '\.')\
                 .replace("-", "\-")
-            result.append('[' + tempDateValue + ' \- ' + tempLessonValue)
+            tempLessonValue = sheet[i][group+1].value\
+                .replace(".", "\.")\
+                .replace("-", "\-")
+            result.append(" ".join(('[' + tempDateValue + ' \- ' + tempLessonValue).split()))
 
     return result

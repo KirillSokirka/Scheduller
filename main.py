@@ -1,15 +1,11 @@
 import config
 import excel
-import dao
 
 import re
 import telebot
 from telebot import types
 
 bot = telebot.TeleBot(config.Token)
-db = dao.meta
-
-db.create_all(dao.engine)
 
 
 @bot.message_handler(commands=['start'])
@@ -32,7 +28,6 @@ def set_group(message):
 
 @bot.message_handler(func=lambda message: message.text in ["11 група"])
 def student_add(message):
-    dao.add_student(message.from_user.id, message.text, False)
     bot.send_message(message.from_user.id,
                      "Тепер оберіть потрібний вам день використовуючи команду /setday")
 
@@ -58,13 +53,9 @@ def group_convert_to_int(group):
 
 @bot.message_handler(func=lambda message: message.text in ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця"])
 def one_day_schedule(message):
-    #group_one = dao.get_group(message.from_user.id)
-    #if  group_one == None:
-     #   bot.send_message(message.from_user.id, "Оберіть спочатку вашу групу використовуючи команду /setgroup")
-        #group = group_convert_to_int(group_one)
     information = excel.ExcelOneDay(11, message.text)
-    for i in range(len(information)):
-        bot.send_message(message.from_user.id, information[i], parse_mode="MarkdownV2")
+    for lesson in information:
+        bot.send_message(message.from_user.id, lesson, parse_mode="MarkdownV2")
 
 @bot.message_handler(content_types=['text'])
 def undefined_text_reaction(message):

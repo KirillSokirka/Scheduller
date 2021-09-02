@@ -18,13 +18,21 @@ def day_to_table(sheet, day):
 
 def ExcelOneDay(group, day):
 
-    sheet = Book.active
+    sheet = Book.get_sheet_by_name("2 курс-біологи")
     result = list()
 
     Day = day_to_table(sheet, day)
 
     for i in range(Day,Day+6):
         if sheet[i][group+1].value != None:
-            result.append('[' + sheet[i][1].value + ' \- ' + sheet[i][group+1].value)
+            tempDateValue = sheet[i][1].value.replace(".", "\.").replace("-", "\-")
+            tempLessonValue = sheet[i][group + 1].value\
+                .replace(".", "\.")\
+                .replace("(", "\(")\
+                .replace(")", "\)")\
+                .replace("[", "\[")\
+                .replace("]", "\]")\
+                .replace("-", "\-")
+            result.append('[' + tempDateValue + ' \- ' + tempLessonValue)
 
     return result
